@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Fredoka:wght@400;600&family=Courier+New&display=swap');
+
+/* --- RESET & BASIC --- */
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+    margin: 0; padding: 0; height: 100vh; width: 100vw;
+    display: flex; flex-direction: column;
+    background-color: var(--bg-color); 
+    color: var(--text-color); 
+    font-family: var(--font-stack);
+    overflow: hidden;
+    transition: background 0.3s, color 0.3s;
+    user-select: none; -webkit-user-select: none;
+}
+
+/* --- CONFIG --- */
+:root {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --accent-color: #bb86fc;
+    --btn-bg: #1e1e1e;
+    --btn-border: none;
+    --btn-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    --radius: 50%;
+    --font-stack: 'Inter', sans-serif;
+    --ring-width: 15px;
+    --ring-bg-op: 0.1;
+    --backdrop: none;
+}
+
+/* --- LAYOUT --- */
+.game-area { 
+    flex: 1; 
+    display: flex; 
+    flex-direction: column;
+    justify-content: center; 
+    align-items: center; 
+    position: relative; 
+    z-index: 10; 
+    perspective: 1000px; 
+}
+
+.fx-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 20; }
+.mirror-mode .game-container { transform: rotateY(180deg); }
+
+.flash-overlay {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: white; opacity: 0; pointer-events: none; z-index: 100;
+    transition: opacity 0.1s;
+}
+
+/* --- GAME CONTAINER --- */
+.game-container { 
+    position: relative; width: 340px; height: 340px; 
+    display: flex; justify-content: center; align-items: center;
+    transition: transform 0.5s;
+    margin-bottom: 20px;
+}
+
+/* --- TIMER --- */
+.timer-svg { position: absolute; width: 100%; height: 100%; transform: rotate(-90deg); pointer-events: none; z-index: 1; }
+.timer-bg, .timer-fg { fill: none; stroke-linecap: butt; transition: stroke 0.3s; }
+.timer-bg { stroke: var(--text-color); stroke-opacity: var(--ring-bg-op); stroke-width: var(--ring-width); }
+.timer-fg { stroke: var(--accent-color); stroke-width: var(--ring-width); } 
+
+/* --- KNAPPEN --- */
+.game-btn {
+    width: 230px; height: 230px;
+    border-radius: var(--radius); background: var(--btn-bg); border: var(--btn-border);
+    box-shadow: var(--btn-shadow); backdrop-filter: var(--backdrop);
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center; cursor: pointer; z-index: 10;
+    position: relative; transition: transform 0.1s, background 0.2s;
+}
+.game-btn:active, .game-btn.holding { transform: scale(0.92); filter: brightness(1.2); }
+.game-btn * { pointer-events: none; }
+
+/* Animationer */
+@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px) rotate(-5deg); } 75% { transform: translateX(8px) rotate(5deg); } }
+.shake { animation: shake 0.4s ease-in-out; border: 2px solid #ff0033 !important; }
+
+@keyframes float { 0% { transform: translate(0, 0); } 50% { transform: translate(-10px, 10px); } 100% { transform: translate(0, 0); } }
+.floating { animation: float 2s infinite ease-in-out; }
+
+/* Partiklar */
+.particle { position: absolute; width: 6px; height: 6px; border-radius: 50%; pointer-events: none; opacity: 1; }
+
+/* TEXT */
+.level-indicator { 
+    font-size: 0.9rem; 
+    font-weight: 800; 
+    opacity: 0.5;
+    letter-spacing: 2px; 
+    color: var(--text-color);
+    margin-top: 10px;
+}
+
+.main-icon { font-size: 3.5rem; margin-bottom: 5px; filter: drop-shadow(0 0 10px rgba(0,0,0,0.5)); min-height: 60px; transition: transform 0.2s;}
+.instruction { font-size: 1.3rem; font-weight: 800; text-transform: uppercase; line-height: 1.1; color: var(--text-color); max-width: 90%; z-index: 2; transition: color 0.2s; }
+.sub-text { font-size: 0.85rem; opacity: 0.7; font-weight: 400; color: var(--text-color); margin-top: 5px; }
+
+/* --- ADMIN PANEL --- */
+.admin-toggle { position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.1); padding: 10px; border-radius: 50%; cursor: pointer; z-index: 1000; font-size: 1.2rem; }
+.dev-panel { position: fixed; top: 0; right: -360px; width: 340px; height: 100vh; background: rgba(0,0,0,0.95); color: #fff; padding: 20px; overflow-y: auto; border-left: 1px solid #333; transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 3000; font-family: monospace; }
+.dev-panel.open { right: 0; }
+
+.btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.config-btn { background: rgba(255,255,255,0.1); border: 1px solid transparent; color: #ccc; padding: 8px; font-size: 0.7rem; cursor: pointer; border-radius: 4px; text-align: center;}
+.config-btn:hover { background: rgba(255,255,255,0.2); }
+.config-btn.active { background: #fff; color: #000; font-weight: bold; }
+
+.check-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 4px;}
+.level-list { max-height: 200px; overflow-y: auto; background: rgba(0,0,0,0.3); border: 1px solid #333; margin-top: 10px; }
+.lvl-item { padding: 5px 10px; border-bottom: 1px solid #444; font-size: 0.75rem; cursor: pointer; display: flex; justify-content: space-between;}
+.lvl-item:hover { background: rgba(255,255,255,0.1); }
+
+h3 { margin-top: 20px; margin-bottom: 5px; border-bottom: 1px solid #333; padding-bottom: 5px; color: #888; font-size: 0.8rem; text-transform: uppercase;}

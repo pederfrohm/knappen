@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knappen v3.1</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="flash-overlay" id="flashOverlay"></div>
+    <div class="admin-toggle">🛠️</div>
+
+    <div class="game-area" id="gameArea">
+        <div class="fx-layer" id="fxLayer"></div>
+
+        <div class="game-container" id="gameContainer">
+            <svg class="timer-svg" viewBox="0 0 200 200">
+                <circle id="ringBg" class="timer-bg" cx="100" cy="100" r="85" stroke-dasharray="0 0" />
+                <circle id="ringFg" class="timer-fg" cx="100" cy="100" r="85" stroke-dasharray="0 0" />
+            </svg>
+
+            <div class="game-btn" id="gameBtn">
+                <div class="main-icon" id="iconArea"></div>
+                <div class="instruction" id="mainText">STARTA</div>
+                <div class="sub-text" id="subText">Tryck för att börja</div>
+            </div>
+        </div>
+
+        <div class="level-indicator" id="lvlText">REDO?</div>
+    </div>
+
+    <div class="dev-panel" id="adminPanel">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h2 style="margin:0;">ADMIN v3.1</h2>
+            <button class="config-btn">×</button>
+        </div>
+
+        <h3>Spelinställningar</h3>
+        <div class="check-row">
+            <span>GOD MODE</span>
+            <input type="checkbox" id="godModeCheck">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap:5px; margin-bottom: 10px;">
+            <button class="config-btn active" id="diffEasy">EASY</button>
+            <button class="config-btn" id="diffNormal">NORMAL</button>
+            <button class="config-btn" id="diffHard">HARD</button>
+            <button class="config-btn" id="diffMad">MADNESS</button>
+        </div>
+
+        <h3>Level Browser</h3>
+        <div class="level-list" id="levelListUI"></div>
+
+        <h3>Test</h3>
+        <div class="btn-grid">
+            <button class="config-btn" onclick="/* handled in js/admin.js */">Sound Test</button>
+            <button class="config-btn" onclick="/* handled in js/admin.js */">Win Level</button>
+        </div>
+    </div>
+
+    <script type="module" src="js/game.js"></script>
+</body>
+
+</html>
