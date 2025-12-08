@@ -5,6 +5,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Knappen v3.1</title>
+    <script>
+        window.onerror = function (msg, url, line) {
+            var c = document.getElementById('debugConsole');
+            if (c) {
+                c.innerHTML += '<div style="color:red">GLOBAL ERROR: ' + msg + ' (' + url + ':' + line + ')</div>';
+            } else {
+                // If console not ready, store it
+                window._errs = window._errs || [];
+                window._errs.push(msg);
+            }
+            return false;
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            var c = document.getElementById('debugConsole');
+            if (c && window._errs) {
+                window._errs.forEach(e => c.innerHTML += '<div style="color:red">PRE-LOAD ERROR: ' + e + '</div>');
+            }
+            if (c) c.innerHTML += '<div>DOM Loaded. Checking modules...</div>';
+        });
+    </script>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -38,6 +59,35 @@
             <button class="config-btn">×</button>
         </div>
 
+        <h3>DEBUG LOG</h3>
+        <div id="debugConsole"
+            style="background:#000; color:#0f0; font-family:monospace; font-size:10px; height:100px; overflow-y:auto; border:1px solid #333; padding:5px; margin-bottom:10px; user-select: text; -webkit-user-select: text;">
+        </div>
+
+        <h3>THEME EDITOR</h3>
+        <div style="margin-bottom:10px;">
+            <label style="font-size:0.75rem; color:#888;">Font</label>
+            <select id="themeFont"
+                style="width:100%; background:rgba(255,255,255,0.1); color:black; border:none; padding:5px;">
+                <option value="'Inter', sans-serif">Inter (Clean)</option>
+                <option value="'Fredoka', sans-serif">Fredoka (Playful)</option>
+                <option value="'Courier New', monospace">Courier (Retro)</option>
+            </select>
+        </div>
+        <div class="check-row">
+            <span>Radius</span>
+            <input type="range" id="themeRadius" min="0" max="50" value="50">
+        </div>
+        <div class="check-row">
+            <span>Glow</span>
+            <input type="range" id="themeGlow" min="0" max="50" value="20">
+        </div>
+        <div class="check-row">
+            <span>Accent</span>
+            <input type="color" id="themeColor" value="#bb86fc">
+        </div>
+        <button class="config-btn" id="btnExportTheme" style="width:100%; margin-top:5px;">Export Theme JSON</button>
+
         <h3>Spelinställningar</h3>
         <div class="check-row">
             <span>GOD MODE</span>
@@ -56,8 +106,8 @@
 
         <h3>Test</h3>
         <div class="btn-grid">
-            <button class="config-btn" onclick="/* handled in js/admin.js */">Sound Test</button>
-            <button class="config-btn" onclick="/* handled in js/admin.js */">Win Level</button>
+            <button class="config-btn" id="btnSoundTest">Sound Test</button>
+            <button class="config-btn" id="btnWinLevel">Win Level</button>
         </div>
     </div>
 
